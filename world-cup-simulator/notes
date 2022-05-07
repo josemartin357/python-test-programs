@@ -1,0 +1,11 @@
+Function outputs the chances of a team winning a tournament. It does so by simulating a tournament 1000 times, and by repeatedly simulating rounds until we are left with one team.
+
+Developer Process:
+MAIN FUNCTION
+Establish a main function that uses command line arguments to open a csv file, read it as dictionary and for every row, append the values and push them to a teams list.
+The main function also runs a loop 1000 times by grabbing the winner of the tournament simulations and pushing data to a counts dictionary.
+The main function also prints the teams and its respective chance of winning.
+
+SIMULATE_GAME
+Takes team1 and team2's ratings as arguments and runs a prability formula to decide what team wins game.
+
