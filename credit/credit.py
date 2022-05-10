@@ -1,40 +1,69 @@
 # write a program that prompts the user for a credit card number and then reports (via print) whether it is a valid American Express, MasterCard, or Visa card number.
-
-from re import I
-from cs50 import get_string
+from cs50 import get_int
 
 def main():
-    # First we ask cards number
-    card_number = get_string("Enter card number: ")
-    check_sum(card_number)
- 
-# checking if card passes the lunh algorithm
-def check_sum(card_number):
-    # reverse numbers and save in a new variable reversed_num
-    reversed_num = card_number[::-1]
+    # Using a method similar to while loop to request user number and check if number entered is over 0
+    while True:
+        # First we ask card number
+        card_number = get_int("Enter card number: ")
+        # if number entered higher than 0 ...
+        if card_number > 0:
+            # ... we exit loop
+            break
 
-    # TEST: loop to iterate thru reversed_sum and save current_number
-    # for i in range(len(reversed_num)):
-    #     current_number = reversed_num[i]
+    # if running card_number on check_validity function works ...
+    if check_validity(card_number):
+        # ... then we call function card_bank on card_number
+        card_bank(card_number)
+    # otherwise, we inform user card_number is invalid
+    else:
+        print("INVALID CARD")
 
-    # splitting reversed_num in a list
-    array_num = list(reversed_num)
-    # converting to int
-    ints = [int(item) for item in array_num]
-    # start even_num and odd_num with value 0
-    even_num = 0
-    odd_num = 0
-    # identifying the every other digit
-    even_list = ints[1::2]
-    # identifying odd digits
-    odd_list = ints[::2]
-    # need to loop thru even_list to * 2
-    for i in range(len(even_list)):
-        # new list gets index of all values * 2
-        multiplied_list = even_list[i] * 2
-        print(multiplied_list)
+# function takes argument, checks validity and returns true or false
+def check_validity(number):
+    # set initial value of sum
+    sum = 0
+    # converting number into a string, then reversing it
+    reversed_string = reversed(str(number))
+    # using enumerate() to target count and value from an iterable. i is the count, c is the value
+    for i, c in enumerate(reversed_string):
+        # if the i string divisible by 2, 
+        if i % 2 == 0:
+            # when during the loop i is even, sum takes value of the original odd values that dont have to be * 2
+            # 456789 // 9 [8] 7 [6] 5 [4] // here sum adds value of 9, and then 7 and then 5
+            sum = sum + int(c) 
+        else:
+            # when during loop, i string is even, define variable that will * 2
+            # 456789 // 9 [8] 7 [6] 5 [4] // here we multiply 8 * 2, then 6 * 2, then 4 * 2
+            multiplied_number = int(c) * 2
+            # for those even numbers, new variable j becomes string elements from values returned from multiplied_number as string for future iteration
+            # 456789 // 9 [8] 7 [6] 5 [4] // in 8*2=16, 16 is value of multiplied_number, j=1 and j=6
+            for j in str(multiplied_number):
+                # sum adds the values of j as int
+                sum = sum + int(j)
 
-main()
+    # checks if sum is divisible by 10
+    if sum % 10 == 0:
+        return True
+    else:
+        return False
+
+def card_bank(card_number):
+    # removing all digits of card_number except the first 2
+    num = int(str(card_number)[0:2])
+    # using conditions to check companies
+    if (num == 34 or num == 37) and len(str(card_number)) == 15:
+        print("AMEX")
+    elif (num > 50 and num <= 55) and len(str(card_number)) == 16:
+        print("MASTERCARD")
+    elif (num >= 40 and num <50) and (len(str(card_number)) == 13 or len(str(card_number)) == 16):
+        print("VISA")
+    else:
+        print("INVALID")
+
+
+if __name__ == "__main__":
+    main()
 
 # Notes:
 # All American Express numbers start with 34 or 37
